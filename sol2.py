@@ -5,7 +5,7 @@ projects = []
 tasks = []
 
 nxt_id = 1
-
+tsk_id = 1
 
 class ProjectCreate(BaseModel):
     name: str
@@ -18,6 +18,18 @@ class Project(BaseModel):
     description: str
     owner: str
 
+
+class taskData(BaseModel):
+    title: str
+    completed: bool = False
+    priority: str = "medium"
+
+class Task(BaseModel):
+    id: int
+    project_id: int
+    title: str
+    completed: bool
+    priority: str
 
 app = FastAPI()
 
@@ -116,19 +128,6 @@ def delete_project(project_id: int):
         detail='Project_id is invalid'
     )
 
-tsk_id = 1
-
-class taskData(BaseModel):
-    title: str
-    completed: bool = False
-    priority: str = "medium"
-
-class Task(BaseModel):
-    id: int
-    project_id: int
-    title: str
-    completed: bool
-    priority: str
 
 #6th api endpoint
 @app.post('/projects/{project_id}/tasks')
