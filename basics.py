@@ -52,6 +52,10 @@ print(todos)
 
 numbers = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
 
-freq = {
-    num: count for 
-}
+counts = {}
+for num in numbers: 
+    if num in counts: 
+        counts[num] += 1
+
+    else: 
+        counts[num] = 1
