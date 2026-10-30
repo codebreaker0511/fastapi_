@@ -161,11 +161,31 @@ def create_task(project_id: int, task: taskData):
 
 #7th api endpoint
 @app.get('/projects/{project_id}/tasks')
-def get_tasks(project_id: int):
+def get_tasks(project_id: int, completed:bool=None, priority: str=None, limit: int = 10, offset:int = 0):
+    task_retrieved = []
     for project in projects: 
-        if project['id'] == project_id:
-            pass
+        if project.id == project_id:
+            task_retrieved = [task for task in tasks if project.id == task.project_id ]
+            filtered_task = []
 
+            for tsk in task_retrieved: 
+                is_completed = (
+                    completed is None or tsk.completed == completed
+                )
+                have_priority = (
+                    not priority or priority.lower() == tsk.priority.lower()
+                )
+                if is_completed and have_priority:
+                    filtered_task.append(tsk)
+
+            return filtered_task[offset: offset+limit]
+
+            
+    raise HTTPException(
+        status_code=404,
+        detail="Project doesn't exist"
+    )
+            
 
 @app.put('/tasks/{task_id}')
 def update_task(task_id: int):
