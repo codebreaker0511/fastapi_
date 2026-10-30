@@ -1,5 +1,6 @@
 prices = {"book": 100, "pen": 20, "bag": 800}
 
+#dictionary comprehension 
 discounted = {
     item: price*0.9 for item,price in prices.items()
 }
@@ -12,6 +13,7 @@ todos = [
     {"id": 2, "title": "Build API"}
 ]
 
+#list comprehension
 todo_sorted = sorted(todos, key = lambda todo: todo["id"])
 print(todo_sorted)
 
