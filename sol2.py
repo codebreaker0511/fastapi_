@@ -179,22 +179,53 @@ def get_tasks(project_id: int, completed:bool=None, priority: str=None, limit: i
                     filtered_task.append(tsk)
 
             return filtered_task[offset: offset+limit]
-
-            
+  
     raise HTTPException(
         status_code=404,
         detail="Project doesn't exist"
     )
-            
 
-@app.put('/tasks/{task_id}')
-def update_task(task_id: int):
-    pass
-
-
+#8th api endpoint
 @app.get('/tasks/{task_id}')
-def get_tasks(task_id):
-    pass
+def get_tasks(task_id:int):
+    for task in tasks: 
+        if task.id == task_id:
+            return task
+
+    raise HTTPException(
+        status_code= 404,
+        detail="Task not found"
+    )
+
+#9th api endpoint
+@app.put('/tasks/{task_id}')
+def update_task(task_id: int, updated_tsk: taskData):
+    if not updated_tsk.title.strip().lower():
+        raise HTTPException(
+            status_code=400,
+            detail="Title can't be left blank"
+        )
+
+    for index, task in enumerate(tasks): 
+        if task.id == task_id:
+            new_tsk = Task(
+                id=task.id,
+                project_id=task.project_id,
+                title=updated_tsk.title,
+                completed=updated_tsk.completed,
+                priority=updated_tsk.priority
+            )
+            tasks[index] = new_tsk
+            return {
+                "message": "Task updated successfully"
+            }
+        
+
+    raise HTTPException(
+        status_code=404,
+        detail="Task doesn't exist"
+    )
+    
 
 
 @app.delete('/tasks/{task_id}')
