@@ -227,7 +227,17 @@ def update_task(task_id: int, updated_tsk: taskData):
     )
     
 
-
+#10th api endpoint
 @app.delete('/tasks/{task_id}')
 def del_task(task_id: int):
-    pass
+    for index, task in enumerate(tasks): 
+        if task.id == task_id: 
+            tasks.pop(index)
+            return {
+                "message": "Task deleted successfully"
+            }
+
+    raise HTTPException (
+        status_code=404,
+        detail="Task doesn't exist"
+    )
